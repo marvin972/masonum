@@ -12,7 +12,7 @@
 				Astuces</h1>
 
 				{# création bouton écrire un astuce on met un path pour si l'adresse change automatiquement la route change sans erreur #}
-				<a href="{{ path('astuces.new') }}" class="btn btn-info">Ecrire un nouvel Astuce</a>
+				<a href="{{ path('astuces.new') }}" class="btn btn-info">Ecrire une nouvelle Astuce</a>
 			{# alerte pour iindiquer que l'astuce a été créé avec succès #}
 			{% for message in app.flashes('success') %}
 				<div class='alert alert-danger mt-4'>
@@ -75,10 +75,10 @@
 		{% else %}
 			{# fin de la condition si il n'y a pas d'astuce #}
 			<h4>
-				Il n'y a pas d'astuce. Mets toi au travail Féniasse !!!! </h4>
+				Il n'y a pas d'astuces. Mets toi au travail Féniasse !!!! </h4>
 
 				{# création bouton écrire un astuce on met un path pour si l'adresse change automatiquement la route change sans erreur #}
-				<a href="{{ path('astuces.new') }}" class="btn btn-info mt-4">Ecrire un nouvel Astuce</a>
+				<a href="{{ path('astuces.new') }}" class="btn btn-info mt-4">Ecrire une nouvelle Astuce</a>
 
 		{% endif %}
 	</div>
