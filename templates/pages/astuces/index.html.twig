@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Maso-Numérique  -Astuces
+{% endblock %}
+
+{% block body %}
+	<div
+		class="container mt-4">
+		{# condition pour dire si il y a un  ou plusieurs astuces ont les affiche sinon on affiche un message indiquant qu'il n 'y a pas d'astuce #}
+		{% if not astuces.items is same as ([]) %}
+			<h1>
+				Astuces</h1>
+
+				{# création bouton écrire un astuce on met un path pour si l'adresse change automatiquement la route change sans erreur #}
+				<a href="{{ path('astuces.new') }}" class="btn btn-info">Ecrire une nouvelle Astuce</a>
+			{# alerte pour iindiquer que l'astuce a été créé avec succès #}
+			{% for message in app.flashes('success') %}
+				<div class='alert alert-danger mt-4'>
+					{{message}}
+				</div>
+			{% endfor %}
+			{% for message in app.flashes('warning') %}
+				<div class='alert alert-danger mt-4'>
+					{{message}}
+				</div>
+			{% endfor %}
+			
+			{# vatiable pour indiquer le nombre d'astuce #}
+			<div class="count mt-4">
+				Il y a
+				{{ astuces.getTotalItemCount }}
+				astuces.
+			</div>
+			{# tavleau pour ranger les astuces le premier déclare le tableau le deuxième injecte les datas #}
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">Numéro</th>
+						<th scope="col">Titre</th>
+						<th scope="col">Contenu</th>
+						<th scope="col">Auteur</th>
+						<th scope="col">Date de publication</th>
+						<th scope="col">Edition</th>
+						<th scope="col">Suppression</th>
+					</tr>
+				</thead>
+				<tbody>
+					{# Création d'un boucle pour afficher tous les astuces #}
+					{% for astuce in astuces %}
+						<div>
+							<tr class="table-info mt-4">
+								<th scope="row">{{astuce.id}}</th>
+								<td>{{astuce.title}}</td>
+								<td>{{astuce.content}}</td>
+								<td>{{astuce.auteur}}</td>
+								<td>{{astuce.createdAt|date('d/m/Y')}}</td>
+								{# |date('d/m/yy') filtre obligatoire pour que la date soit interrprétée par twig #}
+								<td>
+								<a href="{{ path('astuces.edit', { id: astuce.id}) }}" class="btn btn-success">Modifier</a>
+								</td>
+								<td>
+								<a href="{{ path('astuces.delete', { id: astuce.id}) }}" class="btn btn-primary">Supprimer</a>
+								</td>
+							</tr>
+							<div class="navigation"></div>
+						</div>
+
+					{% endfor %}
+				</tbody>
+			</table>
+			{# pagination #}
+			<div class="navigation-info mt-4">
+				{{ knp_pagination_render(astuces) }}
+			</div>
+		{% else %}
+			{# fin de la condition si il n'y a pas d'astuce #}
+			<h4>
+				Il n'y a pas d'astuces. Mets toi au travail Féniasse !!!! </h4>
+
+				{# création bouton écrire un astuce on met un path pour si l'adresse change automatiquement la route change sans erreur #}
+				<a href="{{ path('astuces.new') }}" class="btn btn-info mt-4">Ecrire une nouvelle Astuce</a>
+
+		{% endif %}
+	</div>
+{% endblock %}

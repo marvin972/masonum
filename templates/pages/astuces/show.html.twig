@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Maso-Numérique  -
+	{{ astuces.title}}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="mt-4">{{ astuces.title}}</h1>
+
+		<p class="mt-4">
+			{{astuces.content}}</p>
+		<p class="mt-4">
+			Auteur :
+			{{ astuces.auteur}}</p>
+		<p class="mt-4">Edité le :
+			{{astuces.createdAt|date('d/m/Y')}}</p>
+		{% if astuces.modifiedAt %}
+			<p class="mt-4">Modifié le :
+				{{astuces.modifiedAt|date('d/m/Y')}}</p>
+		{% else %}
+			<p></p>
+		{% endif %}
+	</div>
+{% endblock %}
