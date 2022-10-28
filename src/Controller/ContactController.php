@@ -5,15 +5,17 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
 
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'contact.index')]
-    public function index(Request $request, EntityManagerInterface $manager): Response
+    public function index(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
     {
         $contact = new Contact();
         // Si elle est connecté, elle rentre dans la condition pour avoir son nom et email de préenregistré dans la page contact
@@ -32,16 +34,16 @@ class ContactController extends AbstractController
             $manager->flush();
 
             // Envoie de Mail
-            $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            $email = (new TemplatedEmail())
+            ->from($contact->getEmail())
+            ->to('admin@maso-numerique.com')
+            ->subject($contact->getSubject())
+            ->htmlTemplate('emails/contact.html.twig')
+
+            // pass variables (name => value) to the template
+            ->context([
+                'contact' => $contact
+            ]);
 
         $mailer->send($email);
 
